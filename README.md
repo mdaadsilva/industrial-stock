@@ -25,7 +25,7 @@ O projeto é construído de forma incremental. A cada etapa, uma nova funcionali
 - [Tailwind CSS](https://tailwindcss.com/)
 - [ESLint](https://eslint.org/)
 - [Playwright](https://playwright.dev/) (testes E2E)
-- Persistência inicial via `localStorage` (ver [Arquitetura](#arquitetura))
+- Persistência planejada via `localStorage` (ver [Arquitetura](#arquitetura))
 
 Sem backend, banco de dados ou Docker nesta fase — o foco é o front-end e a automação de testes.
 
@@ -53,10 +53,18 @@ A aplicação fica disponível em [http://localhost:3000](http://localhost:3000)
 | `npm run build`        | Gera o build de produção                      |
 | `npm run start`        | Executa o build de produção                   |
 | `npm run lint`         | Executa o ESLint                              |
+| `npm run test:e2e`     | Executa os testes Playwright                  |
+| `npm run test:e2e:ui`  | Executa os testes Playwright em modo UI       |
 
 ## Playwright
 
-> Configuração ainda não incluída nesta etapa do projeto — em breve.
+Os testes E2E ficam na pasta `tests/`, na raiz do projeto, separada do código-fonte (`src/`). A configuração está em `playwright.config.ts`: os testes rodam contra `http://localhost:3000` e o próprio Playwright sobe o servidor de desenvolvimento (`npm run dev`) automaticamente quando necessário.
+
+```bash
+npx playwright test
+```
+
+Até o momento, o projeto conta apenas com um teste de smoke (`tests/smoke.spec.ts`) que confirma que a aplicação sobe e que o dashboard e a navegação principal são renderizados. Os testes de cada funcionalidade (login, produtos, estoque, filtros, permissões, regressão) serão adicionados conforme as funcionalidades forem implementadas.
 
 A construção do front-end prioriza locators recomendados pelo Playwright (`getByRole`, `getByLabel`, `getByText`) em vez de seletores CSS frágeis. `data-testid` é usado apenas quando não há alternativa semântica razoável.
 
@@ -69,14 +77,14 @@ src/
 ├── features/     # Código organizado por domínio (auth, produtos, estoque, etc.)
 ├── hooks/        # Hooks React reutilizáveis
 ├── lib/          # Configurações e utilitários centrais da aplicação
-├── services/     # Camada de acesso a dados (hoje via localStorage)
+├── services/     # Camada de acesso a dados (planejada via localStorage)
 ├── types/        # Tipos e interfaces TypeScript compartilhados
 └── utils/        # Funções utilitárias genéricas
 
 tests/            # Testes E2E com Playwright
 ```
 
-A camada `services/` isola o acesso a dados do restante da aplicação. Hoje ela é implementada usando `localStorage`, mas a ideia é que essa camada possa futuramente ser substituída por chamadas a uma API real sem exigir mudanças nos componentes ou nas páginas que a consomem.
+A camada `services/` ainda está vazia (apenas a pasta foi criada). A ideia é que ela isole o acesso a dados do restante da aplicação, inicialmente usando `localStorage`, de forma que possa futuramente ser substituída por chamadas a uma API real sem exigir mudanças nos componentes ou nas páginas que a consomem.
 
 ## Funcionalidades
 
@@ -86,10 +94,10 @@ A camada `services/` isola o acesso a dados do restante da aplicação. Hoje ela
 - Estrutura de pastas do front-end
 - Layout principal (header, sidebar) e dashboard inicial
 - Páginas placeholder: login, produtos, estoque, movimentações, usuários
+- Configuração de testes E2E com Playwright e teste de smoke inicial
 
 ### Planejado
 
-- Configuração de testes E2E com Playwright e teste de smoke inicial
 - Autenticação (mockada, sem backend real)
 - Perfis de acesso: Admin, Supervisor, Operador
 - Cadastro de produtos
