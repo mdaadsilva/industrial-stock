@@ -85,11 +85,11 @@ A camada `services/` isola o acesso a dados do restante da aplicação. Hoje ela
 - Projeto Next.js com App Router, TypeScript, Tailwind CSS e ESLint
 - Estrutura de pastas do front-end
 - Layout principal (header, sidebar) e dashboard inicial
+- Páginas placeholder: login, produtos, estoque, movimentações, usuários
 
 ### Planejado
 
 - Configuração de testes E2E com Playwright e teste de smoke inicial
-- Páginas placeholder: login, produtos, estoque, movimentações, usuários
 - Autenticação (mockada, sem backend real)
 - Perfis de acesso: Admin, Supervisor, Operador
 - Cadastro de produtos
